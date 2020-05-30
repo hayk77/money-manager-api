@@ -1,0 +1,3 @@
+{
+  "mongoURI": "mongodb+srv://admin:money-amanger-admin@frankfurt-cluster-tzjeb.mongodb.net/test?retryWrites=true&w=majority"
+}

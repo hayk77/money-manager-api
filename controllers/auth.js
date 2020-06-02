@@ -5,7 +5,17 @@ const config = require('config');
 
 const User = require('../models/User');
 
-exports.postUser = async (req, res) => {
+exports.getAuth = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    res.json(user);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Server error');
+  }
+};
+
+exports.postAuth = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -15,22 +25,18 @@ exports.postUser = async (req, res) => {
 
   try {
     const user = await User.findOne({ email: email });
-    if (user) {
-      return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
+    if (!user) {
+      return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
     }
 
-    const salt = await bcrypt.genSalt(12);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const newUser = new User({
-      email: email,
-      password: hashedPassword,
-    });
-    await newUser.save();
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
+    }
 
     const payload = {
       user: {
-        id: newUser.id,
+        id: user.id,
       },
     };
     jwt.sign(

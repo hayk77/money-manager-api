@@ -14,7 +14,19 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  accounts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Account',
+    },
+  ],
+  records: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Record',
+    },
+  ],
 });
-const User = mongoose.model('user', userSchema);
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;

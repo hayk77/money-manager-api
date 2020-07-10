@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const accountSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
   icon: {
     type: String,
     required: true,
@@ -15,6 +19,6 @@ const accountSchema = new mongoose.Schema({
     default: 0,
   },
 });
-const Account = mongoose.model('account', accountSchema);
+const Account = mongoose.model('Account', accountSchema);
 
 module.exports = Account;

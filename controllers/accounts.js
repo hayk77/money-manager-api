@@ -4,7 +4,7 @@ const Account = require('../models/Account');
 const User = require('../models/User');
 
 exports.getAccounts = async (req, res) => {
-  const { userId } = req.params;
+  const userId = req.user.id;
 
   try {
     const user = User.findById(userId);
@@ -33,7 +33,7 @@ exports.postAccount = async (req, res) => {
   }
 
   const { icon, name, total } = req.body;
-  const { userId } = req.params;
+  const userId = req.user.id;
 
   try {
     const user = await User.findOne({ _id: userId });
@@ -66,7 +66,8 @@ exports.postAccount = async (req, res) => {
 };
 
 exports.putAccount = async (req, res) => {
-  const { userId, accountId } = req.params;
+  const userId = req.user.id;
+  const { accountId } = req.params;
   const { icon, name, total } = req.body;
 
   try {
@@ -103,7 +104,8 @@ exports.putAccount = async (req, res) => {
 };
 
 exports.deleteAccount = async (req, res) => {
-  const { userId, accountId } = req.params;
+  const userId = req.user.id;
+  const { accountId } = req.params;
 
   try {
     const user = await User.findOne({ _id: userId });

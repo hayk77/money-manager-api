@@ -11,10 +11,10 @@ const auth = require('../middleware/auth');
 
 const router = express.Router();
 
-router.get('/:userId', auth, getAccounts);
+router.get('/', auth, getAccounts);
 
 router.post(
-  '/:userId',
+  '/',
   auth,
   [
     check('icon', 'Please choose an icon').exists(),
@@ -23,8 +23,8 @@ router.post(
   postAccount
 );
 
-router.put('/:userId/:accountId', auth, putAccount);
+router.put('/:accountId', auth, putAccount);
 
-router.delete('/:userId/:accountId', auth, deleteAccount);
+router.delete('/:accountId', auth, deleteAccount);
 
 module.exports = router;

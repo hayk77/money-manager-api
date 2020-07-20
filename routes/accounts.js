@@ -19,11 +19,21 @@ router.post(
   [
     check('icon', 'Please choose an icon').exists(),
     check('name', 'Please set the account name').exists(),
+    check('total', 'Please set the total').exists(),
   ],
   postAccount
 );
 
-router.put('/:accountId', auth, putAccount);
+router.put(
+  '/:accountId',
+  auth,
+  [
+    check('icon', 'Please choose an icon').exists(),
+    check('name', 'Please set the account name').exists(),
+    check('total', 'Please set the total').exists(),
+  ],
+  putAccount
+);
 
 router.delete('/:accountId', auth, deleteAccount);
 

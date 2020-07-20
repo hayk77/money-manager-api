@@ -20,6 +20,12 @@ const userSchema = new mongoose.Schema({
       ref: 'Account',
     },
   ],
+  categories: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
+    },
+  ],
   records: [
     {
       type: mongoose.Schema.Types.ObjectId,

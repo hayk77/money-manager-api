@@ -7,6 +7,7 @@ const userRoutes = require('./routes/users');
 const authRoutes = require('./routes/auth');
 const accountRoutes = require('./routes/accounts');
 const categoryRoutes = require('./routes/categories');
+const recordRoutes = require('./routes/records');
 
 connectDB();
 app.use(express.json({ extended: false }));
@@ -24,6 +25,7 @@ app.use('/users', userRoutes);
 app.use('/auth', authRoutes);
 app.use('/accounts', accountRoutes);
 app.use('/categories', categoryRoutes);
+app.use('/records', recordRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`start server: ${PORT}`));

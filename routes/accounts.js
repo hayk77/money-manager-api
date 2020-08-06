@@ -2,8 +2,8 @@ const express = require('express');
 const { check } = require('express-validator');
 
 const {
-  postAccount,
   getAccounts,
+  postAccount,
   putAccount,
   deleteAccount,
 } = require('../controllers/accounts');

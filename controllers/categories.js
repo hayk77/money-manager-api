@@ -72,6 +72,11 @@ exports.postCategory = async (req, res) => {
 };
 
 exports.putCategory = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   const userId = req.user.id;
   const { categoryId } = req.params;
   const { type, icon, name } = req.body;

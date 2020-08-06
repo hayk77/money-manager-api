@@ -1,21 +1,67 @@
 const { validationResult } = require('express-validator');
+const mongoose = require('mongoose');
 
 const Account = require('../models/Account');
 const Category = require('../models/Category');
 const Record = require('../models/Record');
 const User = require('../models/User');
 
+const Checker = (() => {
+  console.log('checking for user');
+
+  const _userExists = async (userId) => {
+    if (mongoose.Types.ObjectId.isValid(userId) === false) {
+      return false;
+    } else {
+      const user = await User.findOne({ _id: userId });
+      if (!user) {
+        return false;
+      }
+      return true;
+    }
+  };
+
+  const _accountExists = async (accountId) => {
+    if (mongoose.Types.ObjectId.isValid(accountId) === false) {
+      return false;
+    } else {
+      const account = await Account.findOne({ _id: accountId });
+      if (!account) {
+        return false;
+      }
+      return true;
+    }
+  };
+
+  const _categoryExists = async (categoryId) => {
+    if (mongoose.Types.ObjectId.isValid(categoryId) === false) {
+      return false;
+    } else {
+      const category = await Category.findOne({ _id: categoryId });
+      if (!category) {
+        return false;
+      }
+      return true;
+    }
+  };
+
+  return {
+    userExists: _userExists,
+    accountExists: _accountExists,
+    categoryExistst: _categoryExists,
+  };
+})();
+
 exports.getRecords = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-      return res.status(400).json({
-        errors: [
-          { msg: 'Invalid credentials. Please logout and sign in again' },
-        ],
-      });
+    const userExists = await Checker.userExists(userId);
+
+    if (!userExists) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: 'Invalid credentials.' }] });
     }
 
     const userPopulated = await User.findById(userId).populate('records');
@@ -38,27 +84,27 @@ exports.postRecord = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-      return res.status(400).json({
-        errors: [
-          { msg: 'Invalid credentials. Please logout and sign in again' },
-        ],
-      });
-    }
-    const account = await Account.findOne({ _id: accountId });
-    if (!account) {
-      console.log('a');
+    const userExists = await Checker.userExists(userId);
+    const accountExists = await Checker.accountExists(accountId);
+    const categoryExistst = await Checker.categoryExistst(categoryId);
+
+    if (!userExists) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: 'Invalid credentials.' }] });
+    } else if (!accountExists) {
       return res
         .status(400)
         .json({ errors: [{ msg: 'Account with that id does not exist' }] });
-    }
-    const category = await Category.findOne({ _id: categoryId });
-    if (!category) {
+    } else if (!categoryExistst) {
       return res
         .status(400)
         .json({ errors: [{ msg: 'Category with that id does not exist' }] });
     }
+
+    const user = await User.findOne({ _id: userId });
+    const account = await Account.findOne({ _id: accountId });
+    const category = await Category.findOne({ _id: categoryId });
 
     // update account total
     if (type === 'expences') {

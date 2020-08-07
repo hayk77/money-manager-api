@@ -43,6 +43,14 @@ module.exports = (() => {
     }
   };
 
+  const _categoryExistsByName = async (name) => {
+    const category = await Category.findOne({ name: name });
+    if (!category) {
+      return false;
+    }
+    return true;
+  };
+
   const _recordExists = async (recordId) => {
     if (mongoose.Types.ObjectId.isValid(recordId) === false) {
       return false;
@@ -58,7 +66,8 @@ module.exports = (() => {
   return {
     userExists: _userExists,
     accountExists: _accountExists,
-    categoryExistst: _categoryExists,
+    categoryExists: _categoryExists,
+    categoryExistsByName: _categoryExistsByName,
     recordExists: _recordExists,
   };
 })();

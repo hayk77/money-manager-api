@@ -2,18 +2,17 @@ const { validationResult } = require('express-validator');
 
 const Category = require('../models/Category');
 const User = require('../models/User');
+const dbDocumentChecker = require('../helpers/db-document-checker');
 
 exports.getCategories = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-      return res.status(400).json({
-        errors: [
-          { msg: 'Invalid credentials. Please logout and sign in again' },
-        ],
-      });
+    const userExists = await dbDocumentChecker.userExists(userId);
+    if (!userExists) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: 'Invalid credentials.' }] });
     }
 
     const userPopulated = await User.findById(userId).populate('categories');
@@ -36,21 +35,20 @@ exports.postCategory = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-      return res.status(400).json({
-        errors: [
-          { msg: 'Invalid credentials. Please logout and sign in again' },
-        ],
-      });
-    }
+    const userExists = await dbDocumentChecker.userExists(userId);
+    const categoryExists = await dbDocumentChecker.categoryExistsByName(name);
 
-    const categoryExists = await Category.findOne({ name: name });
-    if (categoryExists) {
+    if (!userExists) {
       return res
         .status(400)
-        .json({ errors: [{ msg: 'Category with that name already exist' }] });
+        .json({ errors: [{ msg: 'Invalid credentials.' }] });
+    } else if (categoryExists) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: 'Category with that name already exists' }] });
     }
+
+    const user = await User.findOne({ _id: userId });
 
     if (type !== 'expences' && type !== 'incomes') {
       return res
@@ -82,25 +80,27 @@ exports.putCategory = async (req, res) => {
   const { type, icon, name } = req.body;
 
   try {
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-      return res.status(400).json({
-        errors: [
-          { msg: 'Invalid credentials. Please logout and sign in again' },
-        ],
-      });
-    }
+    const userExists = await dbDocumentChecker.userExists(userId);
+    const categoryExists = await dbDocumentChecker.categoryExists(categoryId);
+    const categoryExistsByName = await dbDocumentChecker.categoryExistsByName(
+      name
+    );
 
-    const category = await Category.findById(categoryId);
-    if (!category) {
+    if (!userExists) {
       return res
-        .status(422)
-        .json({ msg: 'Category with that id was not found' });
+        .status(400)
+        .json({ errors: [{ msg: 'Invalid credentials.' }] });
+    } else if (!categoryExists) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: 'Category with that id does not exist' }] });
+    } else if (categoryExistsByName) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: 'Category with that name already exists' }] });
     }
 
-    if (!type || !icon || !name) {
-      return res.status(422).json({ msg: 'Please fill in all fields' });
-    }
+    const category = await Category.findOne({ _id: categoryId });
 
     if (type !== 'expences' && type !== 'incomes') {
       return res
@@ -125,21 +125,20 @@ exports.deleteCategory = async (req, res) => {
   const { categoryId } = req.params;
 
   try {
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-      return res.status(400).json({
-        errors: [
-          { msg: 'Invalid credentials. Please logout and sign in again' },
-        ],
-      });
+    const userExists = await dbDocumentChecker.userExists(userId);
+    const categoryExists = await dbDocumentChecker.categoryExists(categoryId);
+
+    if (!userExists) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: 'Invalid credentials.' }] });
+    } else if (!categoryExists) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: 'Category with that id does not exist' }] });
     }
 
-    const category = await Category.findById(categoryId);
-    if (!category) {
-      return res
-        .status(422)
-        .json({ msg: 'Category with that id was not found' });
-    }
+    const user = await User.findOne({ _id: userId });
 
     const indexOfCategory = user.categories.indexOf(categoryId);
     if (indexOfCategory !== -1) user.categories.splice(indexOfCategory, 1);

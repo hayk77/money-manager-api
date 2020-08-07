@@ -39,7 +39,7 @@ exports.postRecord = async (req, res) => {
   try {
     const userExists = await dbDocumentChecker.userExists(userId);
     const accountExists = await dbDocumentChecker.accountExists(accountId);
-    const categoryExistst = await dbDocumentChecker.categoryExistst(categoryId);
+    const categoryExists = await dbDocumentChecker.categoryExists(categoryId);
 
     if (!userExists) {
       return res
@@ -49,7 +49,7 @@ exports.postRecord = async (req, res) => {
       return res
         .status(400)
         .json({ errors: [{ msg: 'Account with that id does not exist' }] });
-    } else if (!categoryExistst) {
+    } else if (!categoryExists) {
       return res
         .status(400)
         .json({ errors: [{ msg: 'Category with that id does not exist' }] });
@@ -93,7 +93,7 @@ exports.putRecord = async (req, res) => {
   try {
     const userExists = await dbDocumentChecker.userExists(userId);
     const accountExists = await dbDocumentChecker.accountExists(accountId);
-    const categoryExistst = await dbDocumentChecker.categoryExistst(categoryId);
+    const categoryExists = await dbDocumentChecker.categoryExists(categoryId);
     const recordExists = await dbDocumentChecker.recordExists(recordId);
 
     if (!userExists) {
@@ -104,7 +104,7 @@ exports.putRecord = async (req, res) => {
       return res
         .status(400)
         .json({ errors: [{ msg: 'Account with that id does not exist' }] });
-    } else if (!categoryExistst) {
+    } else if (!categoryExists) {
       return res
         .status(400)
         .json({ errors: [{ msg: 'Category with that id does not exist' }] });

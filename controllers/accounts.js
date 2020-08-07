@@ -2,18 +2,17 @@ const { validationResult } = require('express-validator');
 
 const Account = require('../models/Account');
 const User = require('../models/User');
+const dbDocumentChecker = require('../helpers/db-document-checker');
 
 exports.getAccounts = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    const user = User.findById(userId);
-    if (!user) {
-      return res.status(400).json({
-        errors: [
-          { msg: 'Invalid credentials. Please logout and sign in again' },
-        ],
-      });
+    const userExists = await dbDocumentChecker.userExists(userId);
+    if (!userExists) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: 'Invalid credentials.' }] });
     }
 
     const userPopulated = await User.findById(userId).populate('accounts');

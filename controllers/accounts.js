@@ -35,21 +35,21 @@ exports.postAccount = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-      return res.status(400).json({
-        errors: [
-          { msg: 'Invalid credentials. Please logout and sign in again' },
-        ],
-      });
-    }
+    const userExists = await dbDocumentChecker.userExists(userId);
+    const accountExists = await dbDocumentChecker.accountExistsByName(
+      name,
+      userId
+    );
 
-    const accountExists = await Account.findOne({ name: name, userId: userId });
-    if (accountExists) {
+    if (!userExists) {
+      return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
+    } else if (accountExists) {
       return res
         .status(400)
-        .json({ errors: [{ msg: 'Account with that name already exist' }] });
+        .json({ errors: [{ msg: 'Account with that name already exists' }] });
     }
+
+    const user = await User.findOne({ _id: userId });
 
     const newAccount = new Account({ userId, icon, name, total });
     await newAccount.save();
@@ -70,25 +70,26 @@ exports.putAccount = async (req, res) => {
   const { icon, name, total } = req.body;
 
   try {
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-      return res.status(400).json({
-        errors: [
-          { msg: 'Invalid credentials. Please logout and sign in again' },
-        ],
-      });
-    }
+    const userExists = await dbDocumentChecker.userExists(userId);
+    const accountExists = await dbDocumentChecker.accountExists(accountId);
+    const accountExistsByName = await dbDocumentChecker.accountExistsByName(
+      name,
+      userId
+    );
 
-    const account = await Account.findById(accountId);
-    if (!account) {
+    if (!userExists) {
+      return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
+    } else if (!accountExists) {
       return res
-        .status(422)
-        .json({ msg: 'Account with that id was not found' });
+        .status(400)
+        .json({ errors: [{ msg: 'Account with that id does not exist' }] });
+    } else if (accountExistsByName) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: 'Account with that name already exists' }] });
     }
 
-    if (!icon || !name || !total) {
-      return res.status(422).json({ msg: 'Please fill in all fields' });
-    }
+    const account = await Account.findOne({ _id: accountId });
 
     account.icon = icon;
     account.name = name;
@@ -107,21 +108,19 @@ exports.deleteAccount = async (req, res) => {
   const { accountId } = req.params;
 
   try {
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-      return res.status(400).json({
-        errors: [
-          { msg: 'Invalid credentials. Please logout and sign in again' },
-        ],
-      });
+    const userExists = await dbDocumentChecker.userExists(userId);
+    const accountExists = await dbDocumentChecker.accountExists(accountId);
+
+    if (!userExists) {
+      return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
+    } else if (!accountExists) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: 'Account with that id does not exist' }] });
     }
 
-    const account = await Account.findById(accountId);
-    if (!account) {
-      return res
-        .status(422)
-        .json({ msg: 'Account with that id was not found' });
-    }
+    const user = await User.findOne({ _id: userId });
+    const account = await Account.findOne({ _id: accountId });
 
     const indexOfAccount = user.accounts.indexOf(accountId);
     if (indexOfAccount !== -1) user.accounts.splice(indexOfAccount, 1);

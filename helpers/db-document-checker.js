@@ -31,6 +31,14 @@ module.exports = (() => {
     }
   };
 
+  const _accountExistsByName = async (name, userId) => {
+    const account = await Account.findOne({ name: name, userId: userId });
+    if (!account) {
+      return false;
+    }
+    return true;
+  };
+
   const _categoryExists = async (categoryId) => {
     if (mongoose.Types.ObjectId.isValid(categoryId) === false) {
       return false;
@@ -66,6 +74,7 @@ module.exports = (() => {
   return {
     userExists: _userExists,
     accountExists: _accountExists,
+    accountExistsByName: _accountExistsByName,
     categoryExists: _categoryExists,
     categoryExistsByName: _categoryExistsByName,
     recordExists: _recordExists,

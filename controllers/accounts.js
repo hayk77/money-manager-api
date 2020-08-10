@@ -21,7 +21,7 @@ exports.getAccounts = async (req, res) => {
     res.status(200).json(accounts);
   } catch (err) {
     console.log(err);
-    res.status(500).send('Server error');
+    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 };
 
@@ -60,7 +60,7 @@ exports.postAccount = async (req, res) => {
     res.status(201).json(newAccount);
   } catch (err) {
     console.log(err);
-    res.status(500).send('Server error');
+    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 };
 
@@ -99,7 +99,7 @@ exports.putAccount = async (req, res) => {
     res.status(200).json(account);
   } catch (err) {
     console.log(err);
-    res.status(500).send('Server error');
+    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 };
 
@@ -131,6 +131,6 @@ exports.deleteAccount = async (req, res) => {
     res.status(201).json({ msg: 'Account was removed' });
   } catch (err) {
     console.log(err);
-    res.status(500).send('Server error');
+    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 };

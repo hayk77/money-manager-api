@@ -21,7 +21,7 @@ exports.getCategories = async (req, res) => {
     res.status(200).json(categories);
   } catch (err) {
     console.log(err.message);
-    res.status(500).send('Server error');
+    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 };
 
@@ -65,7 +65,7 @@ exports.postCategory = async (req, res) => {
     res.status(201).json(newCategory);
   } catch (err) {
     console.log(err);
-    res.status(500).send('Server error');
+    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 };
 
@@ -116,7 +116,7 @@ exports.putCategory = async (req, res) => {
     res.status(200).json(category);
   } catch (err) {
     console.log(err);
-    res.status(500).send('Server error');
+    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 };
 
@@ -149,6 +149,6 @@ exports.deleteCategory = async (req, res) => {
     res.status(201).json({ msg: 'Category was removed' });
   } catch (err) {
     console.log(err);
-    res.status(500).send('Server error');
+    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 };

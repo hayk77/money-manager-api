@@ -11,7 +11,7 @@ exports.getAuth = async (req, res) => {
     res.json(user);
   } catch (err) {
     console.log(err);
-    res.status(500).send('Server error');
+    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 };
 
@@ -50,6 +50,6 @@ exports.postAuth = async (req, res) => {
     );
   } catch (err) {
     console.log(err);
-    res.status(500).send('Server error');
+    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 };

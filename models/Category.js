@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const Record = require('./Record');
+
 const categorySchema = new mongoose.Schema({
   type: {
     type: String,
@@ -12,9 +14,16 @@ const categorySchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true,
   },
 });
 const Category = mongoose.model('Category', categorySchema);
+
+categorySchema.pre('remove', async function (next) {
+  await this.model('Record').deleteMany({ category: this._id });
+
+  // Record.find({category: this._id})
+  // Record.remove({ category: this._id }).exec();
+  next();
+});
 
 module.exports = Category;

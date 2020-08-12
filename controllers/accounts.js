@@ -36,17 +36,9 @@ exports.postAccount = async (req, res) => {
 
   try {
     const userExists = await dbDocumentChecker.userExists(userId);
-    const accountExists = await dbDocumentChecker.accountExistsByName(
-      name,
-      userId
-    );
 
     if (!userExists) {
       return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
-    } else if (accountExists) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: 'Account with that name already exists' }] });
     }
 
     const user = await User.findOne({ _id: userId });
@@ -72,10 +64,6 @@ exports.putAccount = async (req, res) => {
   try {
     const userExists = await dbDocumentChecker.userExists(userId);
     const accountExists = await dbDocumentChecker.accountExists(accountId);
-    const accountExistsByName = await dbDocumentChecker.accountExistsByName(
-      name,
-      userId
-    );
 
     if (!userExists) {
       return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
@@ -83,10 +71,6 @@ exports.putAccount = async (req, res) => {
       return res
         .status(400)
         .json({ errors: [{ msg: 'Account with that id does not exist' }] });
-    } else if (accountExistsByName) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: 'Account with that name already exists' }] });
     }
 
     const account = await Account.findOne({ _id: accountId });

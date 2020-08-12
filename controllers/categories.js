@@ -2,6 +2,7 @@ const { validationResult } = require('express-validator');
 
 const Category = require('../models/Category');
 const User = require('../models/User');
+const Record = require('../models/Record');
 const dbDocumentChecker = require('../helpers/db-document-checker');
 
 exports.getCategories = async (req, res) => {
@@ -36,16 +37,11 @@ exports.postCategory = async (req, res) => {
 
   try {
     const userExists = await dbDocumentChecker.userExists(userId);
-    const categoryExists = await dbDocumentChecker.categoryExistsByName(name);
 
     if (!userExists) {
       return res
         .status(400)
         .json({ errors: [{ msg: 'Invalid credentials.' }] });
-    } else if (categoryExists) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: 'Category with that name already exists' }] });
     }
 
     const user = await User.findOne({ _id: userId });
@@ -82,9 +78,6 @@ exports.putCategory = async (req, res) => {
   try {
     const userExists = await dbDocumentChecker.userExists(userId);
     const categoryExists = await dbDocumentChecker.categoryExists(categoryId);
-    const categoryExistsByName = await dbDocumentChecker.categoryExistsByName(
-      name
-    );
 
     if (!userExists) {
       return res
@@ -94,10 +87,6 @@ exports.putCategory = async (req, res) => {
       return res
         .status(400)
         .json({ errors: [{ msg: 'Category with that id does not exist' }] });
-    } else if (categoryExistsByName) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: 'Category with that name already exists' }] });
     }
 
     const category = await Category.findOne({ _id: categoryId });
@@ -144,7 +133,9 @@ exports.deleteCategory = async (req, res) => {
     if (indexOfCategory !== -1) user.categories.splice(indexOfCategory, 1);
     await user.save();
 
-    await Category.findByIdAndRemove(categoryId, { useFindAndModify: false });
+    // await Category.findByIdAndRemove(categoryId, { useFindAndModify: false });
+    const category = await Category.findById(categoryId);
+    category.remove();
 
     res.status(201).json({ msg: 'Category was removed' });
   } catch (err) {

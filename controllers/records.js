@@ -27,6 +27,48 @@ exports.getRecords = async (req, res) => {
   }
 };
 
+exports.getMonthlyRecords = async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    const userExists = await dbDocumentChecker.userExists(userId);
+    if (!userExists) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: 'Invalid credentials.' }] });
+    }
+
+    const userPopulated = await User.findById(userId).populate('records');
+    const records = userPopulated.records;
+
+    const d = new Date();
+    const month = d.getMonth();
+    const year = d.getFullYear();
+
+    const monthlyRecords = [];
+    let monthlyIncomes = 0;
+    let monthlyExpences = 0;
+    records.forEach((record) => {
+      if (
+        record.date < new Date() &&
+        record.date > new Date(year + ',' + month)
+      ) {
+        monthlyRecords.push(record);
+        if (record.type === 'expences') {
+          monthlyExpences += record.amount;
+        } else if (record.type === 'incomes') {
+          monthlyIncomes += record.amount;
+        }
+      }
+    });
+
+    res.status(200).json({ monthlyRecords, monthlyIncomes, monthlyExpences });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
+  }
+};
+
 exports.postRecord = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

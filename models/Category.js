@@ -20,9 +20,6 @@ const Category = mongoose.model('Category', categorySchema);
 
 categorySchema.pre('remove', async function (next) {
   await this.model('Record').deleteMany({ category: this._id });
-
-  // Record.find({category: this._id})
-  // Record.remove({ category: this._id }).exec();
   next();
 });
 

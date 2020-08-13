@@ -2,7 +2,6 @@ const { validationResult } = require('express-validator');
 
 const Category = require('../models/Category');
 const User = require('../models/User');
-const Record = require('../models/Record');
 const dbDocumentChecker = require('../helpers/db-document-checker');
 
 exports.getCategories = async (req, res) => {

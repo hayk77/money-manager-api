@@ -13,10 +13,6 @@ const recordSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category',
   },
-  date: {
-    type: Date,
-    default: Date.now,
-  },
   amount: {
     type: Number,
     required: true,
@@ -24,7 +20,16 @@ const recordSchema = new mongoose.Schema({
   note: {
     type: String,
   },
+  date: {
+    type: Date,
+    default: Date.now(),
+  },
 });
 const Record = mongoose.model('Record', recordSchema);
+
+// recordSchema.pre('remove', async function (next) {
+//   await this.model('User').deleteMany({ records: this._id });
+//   next();
+// });
 
 module.exports = Record;

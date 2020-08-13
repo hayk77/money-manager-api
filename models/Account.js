@@ -20,4 +20,9 @@ const accountSchema = new mongoose.Schema({
 });
 const Account = mongoose.model('Account', accountSchema);
 
+accountSchema.pre('remove', async function (next) {
+  await this.model('Record').deleteMany({ account: this._id });
+  next();
+});
+
 module.exports = Account;

@@ -38,8 +38,11 @@ exports.getMonthlyRecords = async (req, res) => {
         .json({ errors: [{ msg: 'Invalid credentials.' }] });
     }
 
-    const userPopulated = await User.findById(userId).populate('records');
+    const userPopulated = await User.findById(userId)
+      .populate('records')
+      .populate('categories');
     const records = userPopulated.records;
+    const categories = userPopulated.categories;
 
     const d = new Date();
     const month = d.getMonth();
@@ -53,7 +56,9 @@ exports.getMonthlyRecords = async (req, res) => {
         record.date < new Date() &&
         record.date > new Date(year + ',' + month)
       ) {
+        // create monthly records array
         monthlyRecords.push(record);
+        // create monthly expences and incomes
         if (record.type === 'expences') {
           monthlyExpences += record.amount;
         } else if (record.type === 'incomes') {
@@ -62,7 +67,26 @@ exports.getMonthlyRecords = async (req, res) => {
       }
     });
 
-    res.status(200).json({ monthlyRecords, monthlyIncomes, monthlyExpences });
+    // create monthly records by categories
+    const monthlyRecordsByCategories = categories.map((category) => {
+      const { _id, type, icon, name } = category;
+      let total = 0;
+
+      records.forEach((record) => {
+        if (category._id.toString() === record.category.toString()) {
+          total += record.amount;
+        }
+      });
+
+      return { _id, type, icon, name, total };
+    });
+
+    res.status(200).json({
+      monthlyRecords,
+      monthlyIncomes,
+      monthlyExpences,
+      monthlyRecordsByCategories,
+    });
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ errors: [{ msg: 'Server Error' }] });

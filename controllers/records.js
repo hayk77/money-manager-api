@@ -17,10 +17,51 @@ exports.getRecords = async (req, res) => {
         .json({ errors: [{ msg: 'Invalid credentials.' }] });
     }
 
-    const userPopulated = await User.findById(userId).populate('records');
-    const records = userPopulated.records;
+    const reqQuery = { ...req.query, user: userId };
+    // const removeFields = ['date'];
+    // removeFields.forEach((param) => delete reqQuery[param]);
+    let queryStr = JSON.stringify(reqQuery);
+    queryStr = queryStr.replace(/\b(gte|lte)\b/g, (match) => `$${match}`);
+    queryStr.user = userId;
 
-    res.status(200).json(records);
+    const records = await Record.find(JSON.parse(queryStr)).sort('-date');
+    const userPopulated = await User.findById(userId).populate('categories');
+    const categories = userPopulated.categories;
+
+    let incomes = 0;
+    const cashflow = [];
+    let expences = 0;
+    records.forEach((record) => {
+      // create monthly expences and incomes
+      if (record.type === 'expences') {
+        expences += record.amount;
+      } else if (record.type === 'incomes') {
+        cashflow.push(record);
+        incomes += record.amount;
+      }
+    });
+
+    // create monthly records by categories
+    const recordsByCategories = categories.map((category) => {
+      const { _id, type, icon, name } = category;
+      let total = 0;
+
+      records.forEach((record) => {
+        if (category._id.toString() === record.category.toString()) {
+          total += record.amount;
+        }
+      });
+
+      return { _id, type, icon, name, total };
+    });
+
+    res.status(200).json({
+      records,
+      incomes,
+      expences,
+      recordsByCategories,
+      cashflow,
+    });
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ errors: [{ msg: 'Server Error' }] });
@@ -133,7 +174,15 @@ exports.postRecord = async (req, res) => {
     }
     await account.save();
 
-    const record = new Record({ type, account, category, date, amount, note });
+    const record = new Record({
+      type,
+      account,
+      category,
+      date,
+      amount,
+      note,
+      user: userId,
+    });
     await record.save();
 
     user.records.push(record);
@@ -184,32 +233,6 @@ exports.putRecord = async (req, res) => {
     const account = await Account.findOne({ _id: accountId });
     const category = await Category.findOne({ _id: categoryId });
     const record = await Record.findOne({ _id: recordId });
-
-    // const user = await User.findOne({ _id: userId });
-    // if (!user) {
-    //   return res.status(400).json({
-    //     errors: [
-    //       { msg: 'Invalid credentials. Please logout and sign in again' },
-    //     ],
-    //   });
-    // }
-    // const account = await Account.findOne({ _id: accountId });
-    // if (!account) {
-    //   return res
-    //     .status(400)
-    //     .json({ errors: [{ msg: 'Account with that id does not exist' }] });
-    // }
-    // const category = await Category.findOne({ _id: categoryId });
-    // if (!category) {
-    //   return res
-    //     .status(400)
-    //     .json({ errors: [{ msg: 'Category with that id does not exist' }] });
-    // }
-    // if (!record) {
-    //   return res
-    //     .status(400)
-    //     .json({ errors: [{ msg: 'Record with that id does not exist' }] });
-    // }
 
     // update accounts total
     if (record.type === 'expences' && type === 'expences') {
@@ -263,27 +286,6 @@ exports.deleteRecord = async (req, res) => {
     const user = await User.findOne({ _id: userId });
     const record = await Record.findOne({ _id: recordId });
     const account = await Account.findOne({ _id: record.account._id });
-
-    // const user = await User.findOne({ _id: userId });
-    // if (!user) {
-    //   return res.status(400).json({
-    //     errors: [
-    //       { msg: 'Invalid credentials. Please logout and sign in again' },
-    //     ],
-    //   });
-    // }
-    // const record = await Record.findOne({ _id: recordId });
-    // if (!record) {
-    //   return res
-    //     .status(400)
-    //     .json({ errors: [{ msg: 'Record with that id does not exist' }] });
-    // }
-    // const account = await Account.findOne({ _id: record.account._id });
-    // if (!account) {
-    //   return res
-    //     .status(400)
-    //     .json({ errors: [{ msg: 'Account with that id does not exist' }] });
-    // }
 
     if (record.type === 'expences') {
       account.total += record.amount;

@@ -24,6 +24,10 @@ const recordSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
 });
 const Record = mongoose.model('Record', recordSchema);
 

@@ -24,7 +24,7 @@ exports.getRecords = async (req, res) => {
     queryStr = queryStr.replace(/\b(gte|lte)\b/g, (match) => `$${match}`);
     queryStr.user = userId;
 
-    const records = await Record.find(JSON.parse(queryStr)).sort('-date');
+    const records = await Record.find(JSON.parse(queryStr)).sort('date');
     const userPopulated = await User.findById(userId).populate('categories');
     const categories = userPopulated.categories;
 

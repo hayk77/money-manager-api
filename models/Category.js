@@ -18,11 +18,11 @@ const categorySchema = new mongoose.Schema({
     ref: 'User',
   },
 });
-const Category = mongoose.model('Category', categorySchema);
 
 categorySchema.pre('remove', async function (next) {
   await this.model('Record').deleteMany({ category: this._id });
   next();
 });
 
+const Category = mongoose.model('Category', categorySchema);
 module.exports = Category;

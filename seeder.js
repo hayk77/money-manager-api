@@ -47,11 +47,11 @@ const deleteData = async () => {
     await Category.deleteMany();
     await Record.deleteMany();
 
-    const user = await User.findById('5f0c013a96c6c9206400013c');
-    user.accounts = [];
-    user.categories = [];
-    user.records = [];
-    await user.save();
+    // const user = await User.findById('5f421e47013cbe085ceebd9b');
+    // user.accounts = [];
+    // user.categories = [];
+    // user.records = [];
+    // await user.save();
 
     console.log('Data Destroyed...');
     process.exit();

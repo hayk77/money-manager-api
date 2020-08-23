@@ -6,11 +6,11 @@ const recordSchema = new mongoose.Schema({
     required: true,
   },
   account: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.ObjectId,
     ref: 'Account',
   },
   category: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.ObjectId,
     ref: 'Category',
   },
   amount: {

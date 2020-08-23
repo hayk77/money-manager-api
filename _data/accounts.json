@@ -4,27 +4,27 @@
     "_id": "5f1a8f95adea9a28b086ef42",
     "icon": "peppers",
     "name": "cash",
-    "user": "5f0c013a96c6c9206400013c"
+    "user": "5f421e47013cbe085ceebd9b"
   },
   {
     "total": 9000,
     "_id": "5f1a8fa4adea9a28b086ef44",
     "icon": "mushrooms",
     "name": "savings",
-    "user": "5f0c013a96c6c9206400013c"
+    "user": "5f421e47013cbe085ceebd9b"
   },
   {
     "total": 650,
     "_id": "5f2d0926e490e50808f3f78e",
     "icon": "mushrooms",
     "name": "bank card",
-    "user": "5f0c013a96c6c9206400013c"
+    "user": "5f421e47013cbe085ceebd9b"
   },
   {
     "total": 155000,
     "_id": "5f3241fb4d1e3e09d04813c0",
     "icon": "peppers",
     "name": "stocks",
-    "user": "5f0c013a96c6c9206400013c"
+    "user": "5f421e47013cbe085ceebd9b"
   }
 ]

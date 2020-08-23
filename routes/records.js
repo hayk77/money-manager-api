@@ -3,7 +3,6 @@ const { check } = require('express-validator');
 
 const {
   getRecords,
-  getMonthlyRecords,
   postRecord,
   putRecord,
   deleteRecord,
@@ -13,7 +12,6 @@ const auth = require('../middleware/auth');
 const router = express.Router();
 
 router.get('/', auth, getRecords);
-router.get('/month', auth, getMonthlyRecords);
 
 router.post(
   '/',

@@ -5,18 +5,18 @@ const User = require('../models/User');
 const dbDocumentChecker = require('../helpers/db-document-checker');
 
 exports.getAccounts = async (req, res) => {
-  const userId = req.user.id;
-
   try {
-    const userExists = await dbDocumentChecker.userExists(userId);
+    const userExists = await dbDocumentChecker.userExists(req.user.id);
     if (!userExists) {
       return res
         .status(400)
         .json({ errors: [{ msg: 'Invalid credentials.' }] });
     }
 
-    const userPopulated = await User.findById(userId).populate('accounts');
-    const accounts = userPopulated.accounts;
+    // const userPopulated = await User.findById(req.user.id).populate('accounts');
+    // const accounts = userPopulated.accounts;
+
+    const accounts = await Account.find({ user: req.user.id });
 
     res.status(200).json(accounts);
   } catch (err) {
@@ -32,22 +32,20 @@ exports.postAccount = async (req, res) => {
   }
 
   const { icon, name, total } = req.body;
-  const userId = req.user.id;
-
   try {
-    const userExists = await dbDocumentChecker.userExists(userId);
+    const userExists = await dbDocumentChecker.userExists(req.user.id);
 
     if (!userExists) {
       return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
     }
 
-    const user = await User.findOne({ _id: userId });
+    // const user = await User.findOne({ _id: req.user.id });
 
-    const newAccount = new Account({ userId, icon, name, total });
+    const newAccount = new Account({ icon, name, total, user: req.user.id });
     await newAccount.save();
 
-    user.accounts.push(newAccount);
-    await user.save();
+    // user.accounts.push(newAccount);
+    // await user.save();
 
     res.status(201).json(newAccount);
   } catch (err) {
@@ -57,13 +55,13 @@ exports.postAccount = async (req, res) => {
 };
 
 exports.putAccount = async (req, res) => {
-  const userId = req.user.id;
-  const { accountId } = req.params;
   const { icon, name, total } = req.body;
 
   try {
-    const userExists = await dbDocumentChecker.userExists(userId);
-    const accountExists = await dbDocumentChecker.accountExists(accountId);
+    const userExists = await dbDocumentChecker.userExists(req.user.id);
+    const accountExists = await dbDocumentChecker.accountExists(
+      req.params.accountId
+    );
 
     if (!userExists) {
       return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
@@ -73,7 +71,7 @@ exports.putAccount = async (req, res) => {
         .json({ errors: [{ msg: 'Account with that id does not exist' }] });
     }
 
-    const account = await Account.findOne({ _id: accountId });
+    const account = await Account.findOne({ _id: req.params.accountId });
 
     account.icon = icon;
     account.name = name;
@@ -88,12 +86,11 @@ exports.putAccount = async (req, res) => {
 };
 
 exports.deleteAccount = async (req, res) => {
-  const userId = req.user.id;
-  const { accountId } = req.params;
-
   try {
-    const userExists = await dbDocumentChecker.userExists(userId);
-    const accountExists = await dbDocumentChecker.accountExists(accountId);
+    const userExists = await dbDocumentChecker.userExists(req.user.id);
+    const accountExists = await dbDocumentChecker.accountExists(
+      req.params.accountId
+    );
 
     if (!userExists) {
       return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
@@ -103,14 +100,14 @@ exports.deleteAccount = async (req, res) => {
         .json({ errors: [{ msg: 'Account with that id does not exist' }] });
     }
 
-    const user = await User.findOne({ _id: userId });
-    const account = await Account.findOne({ _id: accountId });
+    // const user = await User.findOne({ _id: req.user.id });
 
-    const indexOfAccount = user.accounts.indexOf(accountId);
-    if (indexOfAccount !== -1) user.accounts.splice(indexOfAccount, 1);
-    await user.save();
+    // const indexOfAccount = user.accounts.indexOf(req.params.accountId);
+    // if (indexOfAccount !== -1) user.accounts.splice(indexOfAccount, 1);
+    // await user.save();
 
-    await Account.findByIdAndRemove(accountId, { useFindAndModify: false });
+    const account = await Account.findById(req.params.accountId);
+    account.remove();
 
     res.status(201).json({ msg: 'Account was removed' });
   } catch (err) {

@@ -31,9 +31,4 @@ const recordSchema = new mongoose.Schema({
 });
 const Record = mongoose.model('Record', recordSchema);
 
-// recordSchema.pre('remove', async function (next) {
-//   await this.model('User').deleteMany({ records: this._id });
-//   next();
-// });
-
 module.exports = Record;

@@ -1,0 +1,30 @@
+[
+  {
+    "_id": "5f1937c7b24c600940065aa0",
+    "type": "incomes",
+    "icon": "bacon",
+    "name": "salary",
+    "user": "5f0c013a96c6c9206400013c"
+  },
+  {
+    "_id": "5f193e3ba523fb0ed46343c2",
+    "type": "incomes",
+    "icon": "bacon",
+    "name": "passive income",
+    "user": "5f0c013a96c6c9206400013c"
+  },
+  {
+    "_id": "5f1a8a39adea9a28b086ef3c",
+    "type": "expences",
+    "icon": "olives",
+    "name": "gas",
+    "user": "5f0c013a96c6c9206400013c"
+  },
+  {
+    "_id": "5f29174aa691af0323320586",
+    "type": "expences",
+    "icon": "olives",
+    "name": "food",
+    "user": "5f0c013a96c6c9206400013c"
+  }
+]

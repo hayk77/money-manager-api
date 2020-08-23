@@ -14,24 +14,24 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  accounts: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Account',
-    },
-  ],
-  categories: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Category',
-    },
-  ],
-  records: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Record',
-    },
-  ],
+  // accounts: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: 'Account',
+  //   },
+  // ],
+  // categories: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: 'Category',
+  //   },
+  // ],
+  // records: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: 'Record',
+  //   },
+  // ],
 });
 const User = mongoose.model('User', userSchema);
 

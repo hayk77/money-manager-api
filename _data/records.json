@@ -1,0 +1,62 @@
+[
+  {
+    "date": "2020-06-10T07:01:30.197Z",
+    "_id": "5f3a815de11d95042cba1d35",
+    "type": "incomes",
+    "account": "5f3241fb4d1e3e09d04813c0",
+    "category": "5f193e3ba523fb0ed46343c2",
+    "amount": 100,
+    "note": "coca cola stock",
+    "user": "5f0c013a96c6c9206400013c"
+  },
+  {
+    "date": "2020-06-10T07:01:30.197Z",
+    "_id": "5f3bdf16a094a203ba41e0a5",
+    "type": "expences",
+    "account": "5f1a8f95adea9a28b086ef42",
+    "category": "5f1a8a39adea9a28b086ef3c",
+    "amount": 30,
+    "note": "gas station n9",
+    "user": "5f0c013a96c6c9206400013c"
+  },
+  {
+    "date": "2020-07-10T07:01:30.197Z",
+    "_id": "5f3a8197b6c977043f539fdb",
+    "type": "incomes",
+    "account": "5f1a8fa4adea9a28b086ef44",
+    "category": "5f1937c7b24c600940065aa0",
+    "amount": 7000,
+    "note": "main salary",
+    "user": "5f0c013a96c6c9206400013c"
+  },
+  {
+    "date": "2020-07-10T07:01:30.197Z",
+    "_id": "5f3bdefda094a203ba41e0a3",
+    "type": "incomes",
+    "account": "5f1a8f95adea9a28b086ef42",
+    "category": "5f193e3ba523fb0ed46343c2",
+    "amount": 300,
+    "note": "VTF stock",
+    "user": "5f0c013a96c6c9206400013c"
+  },
+  {
+    "date": "2020-08-10T07:01:30.197Z",
+    "_id": "5f3bdf14a094a203ba41e0a4",
+    "type": "expences",
+    "account": "5f1a8f95adea9a28b086ef42",
+    "category": "5f29174aa691af0323320586",
+    "amount": 70,
+    "note": "protein powder",
+    "user": "5f0c013a96c6c9206400013c"
+  },
+  {
+    "date": "2020-08-12T07:01:30.197Z",
+    "_id": "5f3e77f60bcf0508519fc38a",
+    "type": "expences",
+    "account": "5f1a8f95adea9a28b086ef42",
+    "category": "5f29174aa691af0323320586",
+    "amount": 60,
+    "note": "weekly food",
+    "user": "5f0c013a96c6c9206400013c"
+  }
+]

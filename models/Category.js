@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 
-const Record = require('./Record');
-
 const categorySchema = new mongoose.Schema({
   type: {
     type: String,
@@ -14,6 +12,10 @@ const categorySchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
   },
 });
 const Category = mongoose.model('Category', categorySchema);

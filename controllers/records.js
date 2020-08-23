@@ -7,26 +7,23 @@ const User = require('../models/User');
 const dbDocumentChecker = require('../helpers/db-document-checker');
 
 exports.getRecords = async (req, res) => {
-  const userId = req.user.id;
-
   try {
-    const userExists = await dbDocumentChecker.userExists(userId);
+    const userExists = await dbDocumentChecker.userExists(req.user.id);
     if (!userExists) {
       return res
         .status(400)
         .json({ errors: [{ msg: 'Invalid credentials.' }] });
     }
 
-    const reqQuery = { ...req.query, user: userId };
-    // const removeFields = ['date'];
-    // removeFields.forEach((param) => delete reqQuery[param]);
+    const reqQuery = { ...req.query, user: req.user.id };
     let queryStr = JSON.stringify(reqQuery);
     queryStr = queryStr.replace(/\b(gte|lte)\b/g, (match) => `$${match}`);
-    queryStr.user = userId;
+    queryStr.user = req.user.id;
 
     const records = await Record.find(JSON.parse(queryStr)).sort('date');
-    const userPopulated = await User.findById(userId).populate('categories');
-    const categories = userPopulated.categories;
+    const categories = await Category.find({ user: req.user.id });
+    // const userPopulated = await User.findById(req.user.id).populate('categories');
+    // const categories = userPopulated.categories;
 
     let incomes = 0;
     const cashflow = [];
@@ -56,77 +53,12 @@ exports.getRecords = async (req, res) => {
     });
 
     res.status(200).json({
+      count: records.length,
       records,
       incomes,
       expences,
       recordsByCategories,
       cashflow,
-    });
-  } catch (err) {
-    console.log(err.message);
-    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
-  }
-};
-
-exports.getMonthlyRecords = async (req, res) => {
-  const userId = req.user.id;
-
-  try {
-    const userExists = await dbDocumentChecker.userExists(userId);
-    if (!userExists) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: 'Invalid credentials.' }] });
-    }
-
-    const userPopulated = await User.findById(userId)
-      .populate('records')
-      .populate('categories');
-    const records = userPopulated.records;
-    const categories = userPopulated.categories;
-
-    const d = new Date();
-    const month = d.getMonth();
-    const year = d.getFullYear();
-
-    const monthlyRecords = [];
-    let monthlyIncomes = 0;
-    let monthlyExpences = 0;
-    records.forEach((record) => {
-      if (
-        record.date < new Date() &&
-        record.date > new Date(year + ',' + month)
-      ) {
-        // create monthly records array
-        monthlyRecords.push(record);
-        // create monthly expences and incomes
-        if (record.type === 'expences') {
-          monthlyExpences += record.amount;
-        } else if (record.type === 'incomes') {
-          monthlyIncomes += record.amount;
-        }
-      }
-    });
-
-    // create monthly records by categories
-    const monthlyRecordsByCategories = categories.map((category) => {
-      const { _id, type, icon, name } = category;
-      let total = 0;
-
-      records.forEach((record) => {
-        if (category._id.toString() === record.category.toString()) {
-          total += record.amount;
-        }
-      });
-
-      return { _id, type, icon, name, total };
-    });
-
-    res.status(200).json({
-      monthlyRecords,
-      monthlyIncomes,
-      monthlyExpences,
-      monthlyRecordsByCategories,
     });
   } catch (err) {
     console.log(err.message);
@@ -141,10 +73,9 @@ exports.postRecord = async (req, res) => {
   }
 
   const { type, accountId, categoryId, date, amount, note } = req.body;
-  const userId = req.user.id;
 
   try {
-    const userExists = await dbDocumentChecker.userExists(userId);
+    const userExists = await dbDocumentChecker.userExists(req.user.id);
     const accountExists = await dbDocumentChecker.accountExists(accountId);
     const categoryExists = await dbDocumentChecker.categoryExists(categoryId);
 
@@ -162,7 +93,7 @@ exports.postRecord = async (req, res) => {
         .json({ errors: [{ msg: 'Category with that id does not exist' }] });
     }
 
-    const user = await User.findOne({ _id: userId });
+    // const user = await User.findOne({ _id: req.user.id });
     const account = await Account.findOne({ _id: accountId });
     const category = await Category.findOne({ _id: categoryId });
 
@@ -181,12 +112,12 @@ exports.postRecord = async (req, res) => {
       date,
       amount,
       note,
-      user: userId,
+      user: req.user.id,
     });
     await record.save();
 
-    user.records.push(record);
-    await user.save();
+    // user.records.push(record);
+    // await user.save();
 
     res.status(201).json(record);
   } catch (err) {
@@ -202,14 +133,14 @@ exports.putRecord = async (req, res) => {
   }
 
   const { type, accountId, categoryId, date, amount, note } = req.body;
-  const userId = req.user.id;
-  const { recordId } = req.params;
 
   try {
-    const userExists = await dbDocumentChecker.userExists(userId);
+    const userExists = await dbDocumentChecker.userExists(req.user.id);
     const accountExists = await dbDocumentChecker.accountExists(accountId);
     const categoryExists = await dbDocumentChecker.categoryExists(categoryId);
-    const recordExists = await dbDocumentChecker.recordExists(recordId);
+    const recordExists = await dbDocumentChecker.recordExists(
+      req.params.recordId
+    );
 
     if (!userExists) {
       return res
@@ -229,10 +160,10 @@ exports.putRecord = async (req, res) => {
         .json({ errors: [{ msg: 'Record with that id does not exist' }] });
     }
 
-    const user = await User.findOne({ _id: userId });
+    // const user = await User.findOne({ _id: req.user.id });
     const account = await Account.findOne({ _id: accountId });
     const category = await Category.findOne({ _id: categoryId });
-    const record = await Record.findOne({ _id: recordId });
+    const record = await Record.findOne({ _id: req.params.recordId });
 
     // update accounts total
     if (record.type === 'expences' && type === 'expences') {
@@ -266,12 +197,11 @@ exports.putRecord = async (req, res) => {
 };
 
 exports.deleteRecord = async (req, res) => {
-  const userId = req.user.id;
-  const { recordId } = req.params;
-
   try {
-    const userExists = await dbDocumentChecker.userExists(userId);
-    const recordExists = await dbDocumentChecker.recordExists(recordId);
+    const userExists = await dbDocumentChecker.userExists(req.user.id);
+    const recordExists = await dbDocumentChecker.recordExists(
+      req.params.recordId
+    );
 
     if (!userExists) {
       return res
@@ -283,8 +213,8 @@ exports.deleteRecord = async (req, res) => {
         .json({ errors: [{ msg: 'Record with that id does not exist' }] });
     }
 
-    const user = await User.findOne({ _id: userId });
-    const record = await Record.findOne({ _id: recordId });
+    // const user = await User.findOne({ _id: req.user.id });
+    const record = await Record.findOne({ _id: req.params.recordId });
     const account = await Account.findOne({ _id: record.account._id });
 
     if (record.type === 'expences') {
@@ -294,11 +224,13 @@ exports.deleteRecord = async (req, res) => {
     }
     await account.save();
 
-    const indexOfRecord = user.records.indexOf(recordId);
-    if (indexOfRecord !== -1) user.records.splice(indexOfRecord, 1);
-    await user.save();
+    // const indexOfRecord = user.records.indexOf(req.params.recordId);
+    // if (indexOfRecord !== -1) user.records.splice(indexOfRecord, 1);
+    // await user.save();
 
-    await Record.findByIdAndRemove(recordId, { useFindAndModify: false });
+    await Record.findByIdAndRemove(req.params.recordId, {
+      useFindAndModify: false,
+    });
 
     res.status(201).json({ msg: 'Record was removed' });
   } catch (err) {

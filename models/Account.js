@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const accountSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-  },
+  // userId: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'User',
+  // },
   icon: {
     type: String,
     required: true,
@@ -16,6 +16,10 @@ const accountSchema = new mongoose.Schema({
   total: {
     type: Number,
     default: 0,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
   },
 });
 const Account = mongoose.model('Account', accountSchema);

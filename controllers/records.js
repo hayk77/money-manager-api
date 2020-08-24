@@ -17,7 +17,7 @@ exports.getRecords = async (req, res) => {
 
     const reqQuery = { ...req.query, user: req.user.id };
     let queryStr = JSON.stringify(reqQuery);
-    queryStr = queryStr.replace(/\b(gte|lte)\b/g, (match) => `$${match}`);
+    queryStr = queryStr.replace(/\b(gte|lte|gt|lt)\b/g, (match) => `$${match}`);
     queryStr.user = req.user.id;
 
     const records = await Record.find(JSON.parse(queryStr)).sort('date');

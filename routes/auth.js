@@ -1,13 +1,19 @@
 const express = require('express');
 const { check } = require('express-validator');
 
-const { getAuth, postAuth } = require('../controllers/auth');
+const {
+  getAuth,
+  postAuth,
+  putEmail,
+  putPassword,
+} = require('../controllers/auth');
 const auth = require('../middleware/auth');
 
 const router = express.Router();
 
+// GET /auth
 router.get('/', auth, getAuth);
-
+// POST /auth
 router.post(
   '/',
   [
@@ -16,5 +22,9 @@ router.post(
   ],
   postAuth
 );
+// PUT (private) /auth/email
+router.put('/email', auth, putEmail);
+// PUT (private) /auth/email
+router.put('/password', auth, putPassword);
 
 module.exports = router;

@@ -56,14 +56,16 @@ exports.postAuth = async (req, res) => {
 };
 // PUT(private) /auth/email
 exports.putEmail = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors);
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     let user = await User.find({ _id: req.user.id });
     if (!user) {
       return res.status(404).json({ msg: 'User with that id does not exist' });
-    }
-
-    if (!req.body.email) {
-      return res.status(400).json({ msg: 'Please include a valid email' });
     }
 
     await User.findOneAndUpdate(
@@ -80,13 +82,15 @@ exports.putEmail = async (req, res) => {
 };
 // PUT(private) /auth/password
 exports.putPassword = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     const user = await User.findOne({ _id: req.user.id });
     if (!user) {
       return res.status(404).json({ msg: 'User with that id does not exist' });
-    }
-    if (!req.body.password) {
-      return res.status(400).json({ msg: 'Invalid password' });
     }
 
     const isMatch = await bcrypt.compare(req.body.oldPassword, user.password);

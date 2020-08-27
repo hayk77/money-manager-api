@@ -18,13 +18,33 @@ router.post(
   '/',
   [
     check('email', 'Email is not valid').isEmail(),
-    check('password', 'Password is required').exists(),
+    check('password')
+      .exists()
+      .withMessage('Password can not be empty')
+      .isLength({ min: 6 })
+      .withMessage('Password can not be less than 6 character'),
   ],
   postAuth
 );
 // PUT (private) /auth/email
-router.put('/email', auth, putEmail);
+router.put(
+  '/email',
+  auth,
+  [check('email', 'Email is not valid').exists().isEmail()],
+  putEmail
+);
 // PUT (private) /auth/email
-router.put('/password', auth, putPassword);
+router.put(
+  '/password',
+  auth,
+  [
+    check('password')
+      .exists()
+      .withMessage('Password can not be empty')
+      .isLength({ min: 6 })
+      .withMessage('Password can not be less than 6 character'),
+  ],
+  putPassword
+);
 
 module.exports = router;

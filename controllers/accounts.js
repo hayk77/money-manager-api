@@ -86,6 +86,7 @@ exports.putAccount = async (req, res) => {
 };
 
 exports.deleteAccount = async (req, res) => {
+  const id = req.params.accountId;
   try {
     const userExists = await dbDocumentChecker.userExists(req.user.id);
     const accountExists = await dbDocumentChecker.accountExists(
@@ -109,7 +110,7 @@ exports.deleteAccount = async (req, res) => {
     const account = await Account.findById(req.params.accountId);
     account.remove();
 
-    res.status(201).json({ msg: 'Account was removed' });
+    res.status(201).json({ id });
   } catch (err) {
     console.log(err);
     res.status(500).json({ errors: [{ msg: 'Server Error' }] });

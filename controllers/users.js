@@ -10,7 +10,7 @@ exports.postUser = async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const { email, password } = req.body;
+  const { name, email, password } = req.body;
 
   try {
     const user = await User.findOne({ email: email });
@@ -22,6 +22,7 @@ exports.postUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = new User({
+      name: name,
       email: email,
       password: hashedPassword,
     });

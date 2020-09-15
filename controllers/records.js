@@ -20,7 +20,10 @@ exports.getRecords = async (req, res) => {
     queryStr = queryStr.replace(/\b(gte|lte|gt|lt)\b/g, (match) => `$${match}`);
     queryStr.user = req.user.id;
 
-    const records = await Record.find(JSON.parse(queryStr)).sort('date');
+    const records = await Record.find(JSON.parse(queryStr))
+      .populate('category')
+      .populate('account')
+      .sort('-date');
     const categories = await Category.find({ user: req.user.id });
     // const userPopulated = await User.findById(req.user.id).populate('categories');
     // const categories = userPopulated.categories;
@@ -44,7 +47,7 @@ exports.getRecords = async (req, res) => {
       let total = 0;
 
       records.forEach((record) => {
-        if (category._id.toString() === record.category.toString()) {
+        if (category._id.toString() === record.category._id.toString()) {
           total += record.amount;
         }
       });

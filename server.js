@@ -3,6 +3,9 @@ const cors = require('cors');
 const express = require('express');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
+const xssClean = require('xss-clean');
+const rateLimit = require('express-rate-limit');
+const hpp = require('hpp');
 
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/users');
@@ -21,6 +24,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(mongoSanitize());
 app.use(helmet());
 app.use(cors());
+app.use(xssClean());
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1min
+  max: 100,
+});
+app.use(limiter);
+app.use(hpp());
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');

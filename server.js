@@ -2,6 +2,7 @@ const cors = require('cors');
 
 const express = require('express');
 const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
 
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/users');
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // security
 app.use(mongoSanitize());
+app.use(helmet());
 app.use(cors());
 
 app.use((req, res, next) => {

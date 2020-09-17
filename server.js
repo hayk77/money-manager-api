@@ -1,6 +1,7 @@
-const express = require('express');
 const cors = require('cors');
-const app = express();
+
+const express = require('express');
+const mongoSanitize = require('express-mongo-sanitize');
 
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/users');
@@ -9,9 +10,14 @@ const accountRoutes = require('./routes/accounts');
 const categoryRoutes = require('./routes/categories');
 const recordRoutes = require('./routes/records');
 
+const app = express();
+
 connectDB();
 app.use(express.json({ extended: false }));
 app.use(express.urlencoded({ extended: false }));
+
+// security
+app.use(mongoSanitize());
 app.use(cors());
 
 app.use((req, res, next) => {

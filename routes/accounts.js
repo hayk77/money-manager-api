@@ -17,7 +17,7 @@ router.post(
   '/',
   auth,
   [
-    check('icon', 'Please choose an icon').exists(),
+    check('type', 'Please choose account type').exists(),
     check('name', 'Please set the account name').exists(),
     check('total', 'Please set the total').exists(),
   ],
@@ -28,7 +28,7 @@ router.put(
   '/:accountId',
   auth,
   [
-    check('icon', 'Please choose an icon').exists(),
+    check('type', 'Please choose account type').exists(),
     check('name', 'Please set the account name').exists(),
     check('total', 'Please set the total').exists(),
   ],

@@ -3,7 +3,6 @@ const { validationResult } = require('express-validator');
 const Account = require('../models/Account');
 const Category = require('../models/Category');
 const Record = require('../models/Record');
-const User = require('../models/User');
 const dbDocumentChecker = require('../helpers/db-document-checker');
 
 exports.getRecords = async (req, res) => {
@@ -20,7 +19,7 @@ exports.getRecords = async (req, res) => {
     queryStr = queryStr.replace(/\b(gte|lte|gt|lt)\b/g, (match) => `$${match}`);
     queryStr.user = req.user.id;
 
-    const records = await Record.find(JSON.parse(queryStr))
+    let records = await Record.find(JSON.parse(queryStr))
       .populate('category')
       .populate('account')
       .sort('-date');

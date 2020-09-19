@@ -31,7 +31,7 @@ exports.postAccount = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { icon, name, total } = req.body;
+  const { type, name, total } = req.body;
   try {
     const userExists = await dbDocumentChecker.userExists(req.user.id);
 
@@ -41,7 +41,7 @@ exports.postAccount = async (req, res) => {
 
     // const user = await User.findOne({ _id: req.user.id });
 
-    const newAccount = new Account({ icon, name, total, user: req.user.id });
+    const newAccount = new Account({ type, name, total, user: req.user.id });
     await newAccount.save();
 
     // user.accounts.push(newAccount);
@@ -55,7 +55,7 @@ exports.postAccount = async (req, res) => {
 };
 
 exports.putAccount = async (req, res) => {
-  const { icon, name, total } = req.body;
+  const { type, name, total } = req.body;
 
   try {
     const userExists = await dbDocumentChecker.userExists(req.user.id);
@@ -73,7 +73,7 @@ exports.putAccount = async (req, res) => {
 
     const account = await Account.findOne({ _id: req.params.accountId });
 
-    account.icon = icon;
+    account.type = type;
     account.name = name;
     account.total = total;
     await account.save();

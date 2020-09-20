@@ -3,6 +3,7 @@ const { check } = require('express-validator');
 
 const {
   getRecords,
+  getRecord,
   postRecord,
   putRecord,
   deleteRecord,
@@ -12,6 +13,8 @@ const auth = require('../middleware/auth');
 const router = express.Router();
 
 router.get('/', auth, getRecords);
+
+router.get('/:id', getRecord);
 
 router.post(
   '/',

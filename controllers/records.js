@@ -68,6 +68,25 @@ exports.getRecords = async (req, res) => {
   }
 };
 
+exports.getRecord = async (req, res) => {
+  try {
+    // const userExists = await dbDocumentChecker.userExists(req.user.id);
+    // if (!userExists) {
+    //   return res
+    //     .status(400)
+    //     .json({ errors: [{ msg: 'Invalid credentials.' }] });
+    // }
+    let record = await Record.findById(req.params.id)
+      .populate('category')
+      .populate('account');
+
+    res.status(200).json({ record });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
+  }
+};
+
 exports.postRecord = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

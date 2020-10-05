@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 
 const User = require('../models/User');
+const seedData = require('../seedData');
 
 exports.postUser = async (req, res) => {
   const errors = validationResult(req);
@@ -42,6 +43,8 @@ exports.postUser = async (req, res) => {
         res.status(200).json({ token });
       }
     );
+
+    await seedData(newUser.id);
   } catch (err) {
     console.log(err);
     res.status(500).json({ errors: [{ msg: 'Server Error' }] });

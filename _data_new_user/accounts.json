@@ -1,0 +1,22 @@
+[
+  {
+    "total": 0,
+    "type": "Cash",
+    "name": "Cash"
+  },
+  {
+    "total": 0,
+    "type": "Saving Account",
+    "name": "Savings"
+  },
+  {
+    "total": 0,
+    "type": "Credit Card",
+    "name": "Bank Card"
+  },
+  {
+    "total": 0,
+    "type": "Investment",
+    "name": "Stocks"
+  }
+]

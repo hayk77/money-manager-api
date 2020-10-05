@@ -1,0 +1,78 @@
+[
+  {
+    "type": "expences",
+    "icon": "fast-food-outline",
+    "name": "Food"
+  },
+  {
+    "type": "expences",
+    "icon": "bus-outline",
+    "name": "Transportation"
+  },
+  {
+    "type": "expences",
+    "icon": "shirt-outline",
+    "name": "Shopping"
+  },
+  {
+    "type": "expences",
+    "icon": "flash-outline",
+    "name": "Bills"
+  },
+  {
+    "type": "expences",
+    "icon": "home-outline",
+    "name": "Home"
+  },
+  {
+    "type": "expences",
+    "icon": "phone-portrait-outline",
+    "name": "Telephone"
+  },
+  {
+    "type": "expences",
+    "icon": "gift-outline",
+    "name": "Gift"
+  },
+  {
+    "type": "expences",
+    "icon": "beer-outline",
+    "name": "Party"
+  },
+  {
+    "type": "expences",
+    "icon": "earth-outline",
+    "name": "Travel"
+  },
+  {
+    "type": "expences",
+    "icon": "library-outline",
+    "name": "Education"
+  },
+  {
+    "type": "expences",
+    "icon": "heart-outline",
+    "name": "Health"
+  },
+  {
+    "type": "expences",
+    "icon": "car-outline",
+    "name": "Car"
+  },
+
+  {
+    "type": "incomes",
+    "icon": "wallet-outline",
+    "name": "Salary"
+  },
+  {
+    "type": "incomes",
+    "icon": "business-outline",
+    "name": "Investments"
+  },
+  {
+    "type": "incomes",
+    "icon": "card-outline",
+    "name": "Dividents"
+  }
+]

@@ -1,13 +1,8 @@
 [
   {
     "total": 0,
-    "type": "Cash",
-    "name": "Cash"
-  },
-  {
-    "total": 0,
-    "type": "Saving Account",
-    "name": "Savings"
+    "type": "Investment",
+    "name": "Stocks"
   },
   {
     "total": 0,
@@ -16,7 +11,12 @@
   },
   {
     "total": 0,
-    "type": "Investment",
-    "name": "Stocks"
+    "type": "Saving Account",
+    "name": "Savings"
+  },
+  {
+    "total": 0,
+    "type": "Cash",
+    "name": "Cash"
   }
 ]

@@ -1,22 +1,22 @@
 [
   {
     "total": 0,
-    "type": "Investment",
+    "type": "investment",
     "name": "Stocks"
   },
   {
     "total": 0,
-    "type": "Credit Card",
+    "type": "creditcard",
     "name": "Bank Card"
   },
   {
     "total": 0,
-    "type": "Saving Account",
+    "type": "savingaccount",
     "name": "Savings"
   },
   {
     "total": 0,
-    "type": "Cash",
+    "type": "cash",
     "name": "Cash"
   }
 ]

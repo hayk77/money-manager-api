@@ -21,11 +21,6 @@
   },
   {
     "type": "expences",
-    "icon": "home-outline",
-    "name": "Home"
-  },
-  {
-    "type": "expences",
     "icon": "phone-portrait-outline",
     "name": "Telephone"
   },

@@ -15,15 +15,27 @@ const categoryRoutes = require('./routes/categories');
 const recordRoutes = require('./routes/records');
 
 const app = express();
-app.use(cors());
 
 connectDB();
 app.use(express.json({ extended: false }));
 app.use(express.urlencoded({ extended: false }));
 
-
-
+// CORS
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'OPTIONS, GET, POST, PUT,  DELETE'
+  );
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, content-type");
+  next();
+});
+    
+    
 // security
+app.use(cors());
 app.use(mongoSanitize());
 app.use(helmet());
 app.use(xssClean());

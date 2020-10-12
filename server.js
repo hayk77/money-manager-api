@@ -15,28 +15,17 @@ const categoryRoutes = require('./routes/categories');
 const recordRoutes = require('./routes/records');
 
 const app = express();
+app.use(cors());
 
 connectDB();
 app.use(express.json({ extended: false }));
 app.use(express.urlencoded({ extended: false }));
 
-// CORS
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'OPTIONS, GET, POST, PUT,  DELETE'
-  );
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-});
 
 
 // security
 app.use(mongoSanitize());
 app.use(helmet());
-// app.use(cors());
 app.use(xssClean());
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1min
@@ -44,13 +33,6 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 app.use(hpp());
-
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-});
 
 app.use('/users', userRoutes);
 app.use('/auth', authRoutes);

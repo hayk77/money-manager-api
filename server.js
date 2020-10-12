@@ -27,14 +27,16 @@ app.use((req, res, next) => {
     'Access-Control-Allow-Methods',
     'OPTIONS, GET, POST, PUT,  DELETE'
   );
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
 
+
 // security
 app.use(mongoSanitize());
 app.use(helmet());
-app.use(cors());
+// app.use(cors());
 app.use(xssClean());
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1min

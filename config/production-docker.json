@@ -1,0 +1,5 @@
+{
+    "mongoURI": "mongodb://mongo:27017/docker-node-mongo",
+    "jwtSecret": "jwt-secret-token-6829053238"
+}
+  

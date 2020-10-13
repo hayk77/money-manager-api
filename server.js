@@ -4,7 +4,6 @@ const helmet = require('helmet');
 const xssClean = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
-
 const cors = require('cors');
 
 const connectDB = require('./config/db');
@@ -21,17 +20,16 @@ app.use(express.json({ extended: false }));
 app.use(express.urlencoded({ extended: false }));
 
 // CORS
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT,  DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-auth-token, content-type');
-  res.setHeader("Content-Type", "application/json;charset=utf-8");
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT,  DELETE');
+//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-auth-token');
+//   res.setHeader("Content-Type", "application/json");
+//   next();
+// });
     
     
 // security
-// app.use(cors());
 app.use(mongoSanitize());
 app.use(helmet());
 app.use(xssClean());
@@ -41,6 +39,9 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 app.use(hpp());
+
+// Enable CORS
+app.use(cors());
 
 app.use('/users', userRoutes);
 app.use('/auth', authRoutes);

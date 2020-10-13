@@ -32,6 +32,8 @@ app.use(express.urlencoded({ extended: false }));
 // security
 app.use(mongoSanitize());
 app.use(helmet());
+// Enable CORS
+app.use(cors());
 app.use(xssClean());
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1min
@@ -40,8 +42,6 @@ const limiter = rateLimit({
 app.use(limiter);
 app.use(hpp());
 
-// Enable CORS
-app.use(cors());
 
 app.use('/users', userRoutes);
 app.use('/auth', authRoutes);

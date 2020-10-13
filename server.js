@@ -1,11 +1,11 @@
-const cors = require('cors');
-
 const express = require('express');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xssClean = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
+
+const cors = require('cors');
 
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/users');
@@ -22,20 +22,11 @@ app.use(express.urlencoded({ extended: false }));
 
 // CORS
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT,  DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-auth-token');
   next();
 });
-// app.use((req, res, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', '*');
-//   res.setHeader(
-//     'Access-Control-Allow-Methods',
-//     'OPTIONS, GET, POST, PUT,  DELETE'
-//   );
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-//   res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, content-type");
-//   next();
-// });
     
     
 // security

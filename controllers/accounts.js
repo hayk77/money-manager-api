@@ -8,9 +8,7 @@ exports.getAccounts = async (req, res) => {
   try {
     const userExists = await dbDocumentChecker.userExists(req.user.id);
     if (!userExists) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: 'Invalid credentials.' }] });
+      return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
     }
 
     // const userPopulated = await User.findById(req.user.id).populate('accounts');
@@ -37,6 +35,16 @@ exports.postAccount = async (req, res) => {
 
     if (!userExists) {
       return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
+    }
+
+    // dublicate name
+    const accountExistsByName = await dbDocumentChecker.accountExistsByName(
+      name
+    );
+    if (accountExistsByName) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: 'Account with that name exists' }] });
     }
 
     // const user = await User.findOne({ _id: req.user.id });
@@ -69,6 +77,16 @@ exports.putAccount = async (req, res) => {
       return res
         .status(400)
         .json({ errors: [{ msg: 'Account with that id does not exist' }] });
+    }
+
+    // dublicate name
+    const accountExistsByName = await dbDocumentChecker.accountExistsByName(
+      name
+    );
+    if (accountExistsByName) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: 'Account with that name exists' }] });
     }
 
     const account = await Account.findOne({ _id: req.params.accountId });

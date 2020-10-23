@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xssClean = require('xss-clean');
@@ -27,8 +28,9 @@ app.use(express.urlencoded({ extended: false }));
 //   res.setHeader("Content-Type", "application/json");
 //   next();
 // });
-    
-    
+
+app.use(morgan('dev'));
+
 // security
 app.use(mongoSanitize());
 app.use(helmet());
@@ -42,7 +44,6 @@ const limiter = rateLimit({
 app.use(limiter);
 app.use(hpp());
 
-
 app.use('/users', userRoutes);
 app.use('/auth', authRoutes);
 app.use('/accounts', accountRoutes);
@@ -50,4 +51,4 @@ app.use('/categories', categoryRoutes);
 app.use('/records', recordRoutes);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`start server: ${PORT}`));
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

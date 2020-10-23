@@ -8,9 +8,7 @@ exports.getCategories = async (req, res) => {
   try {
     const userExists = await dbDocumentChecker.userExists(req.user.id);
     if (!userExists) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: 'Invalid credentials.' }] });
+      return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
     }
 
     // const userPopulated = await User.findById(userId).populate('categories');
@@ -35,11 +33,18 @@ exports.postCategory = async (req, res) => {
 
   try {
     const userExists = await dbDocumentChecker.userExists(req.user.id);
-
     if (!userExists) {
+      return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
+    }
+
+    // dublicate name
+    const categoryExistsByName = await dbDocumentChecker.categoryExistsByName(
+      name
+    );
+    if (categoryExistsByName) {
       return res
         .status(400)
-        .json({ errors: [{ msg: 'Invalid credentials.' }] });
+        .json({ errors: [{ msg: 'Category with that name exists' }] });
     }
 
     // const user = await User.findOne({ _id: req.user.id });
@@ -78,13 +83,21 @@ exports.putCategory = async (req, res) => {
     );
 
     if (!userExists) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: 'Invalid credentials.' }] });
+      return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
     } else if (!categoryExists) {
       return res
         .status(400)
         .json({ errors: [{ msg: 'Category with that id does not exist' }] });
+    }
+
+    // dublicate name
+    const categoryExistsByName = await dbDocumentChecker.categoryExistsByName(
+      name
+    );
+    if (categoryExistsByName) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: 'Category with that name exists' }] });
     }
 
     const category = await Category.findOne({ _id: req.params.categoryId });
@@ -115,9 +128,7 @@ exports.deleteCategory = async (req, res) => {
     );
 
     if (!userExists) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: 'Invalid credentials.' }] });
+      return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
     } else if (!categoryExists) {
       return res
         .status(400)

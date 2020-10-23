@@ -9,9 +9,7 @@ exports.getRecords = async (req, res) => {
   try {
     const userExists = await dbDocumentChecker.userExists(req.user.id);
     if (!userExists) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: 'Invalid credentials.' }] });
+      return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
     }
 
     const reqQuery = { ...req.query, user: req.user.id };
@@ -74,7 +72,7 @@ exports.getRecord = async (req, res) => {
     // if (!userExists) {
     //   return res
     //     .status(400)
-    //     .json({ errors: [{ msg: 'Invalid credentials.' }] });
+    //     .json({ errors: [{ msg: 'Invalid credentials' }] });
     // }
     let record = await Record.findById(req.params.id)
       .populate('category')
@@ -101,9 +99,7 @@ exports.postRecord = async (req, res) => {
     const categoryExists = await dbDocumentChecker.categoryExists(categoryId);
 
     if (!userExists) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: 'Invalid credentials.' }] });
+      return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
     } else if (!accountExists) {
       return res
         .status(400)
@@ -164,9 +160,7 @@ exports.putRecord = async (req, res) => {
     );
 
     if (!userExists) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: 'Invalid credentials.' }] });
+      return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
     } else if (!accountExists) {
       return res
         .status(400)
@@ -225,9 +219,7 @@ exports.deleteRecord = async (req, res) => {
     );
 
     if (!userExists) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: 'Invalid credentials.' }] });
+      return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
     } else if (!recordExists) {
       return res
         .status(400)

@@ -9,7 +9,7 @@ const connectDB = async () => {
       useUnifiedTopology: true,
       useCreateIndex: true,
     });
-    console.log('connect to database');
+    console.log('Conntected to the database');
   } catch (err) {
     console.log(err.message);
     process.exit(`1`);

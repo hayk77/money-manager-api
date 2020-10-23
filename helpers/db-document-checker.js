@@ -29,13 +29,13 @@ module.exports = (() => {
     }
   };
 
-  // const _accountExistsByName = async (name, userId) => {
-  //   const account = await Account.findOne({ name: name, userId: userId });
-  //   if (!account) {
-  //     return false;
-  //   }
-  //   return true;
-  // };
+  const _accountExistsByName = async (name, userId) => {
+    const account = await Account.findOne({ name: name, userId: userId });
+    if (!account) {
+      return false;
+    }
+    return true;
+  };
 
   const _categoryExists = async (categoryId) => {
     if (mongoose.Types.ObjectId.isValid(categoryId) === false) {
@@ -49,13 +49,14 @@ module.exports = (() => {
     }
   };
 
-  // const _categoryExistsByName = async (name) => {
-  //   const category = await Category.findOne({ name: name });
-  //   if (!category) {
-  //     return false;
-  //   }
-  //   return true;
-  // };
+  const _categoryExistsByName = async (name) => {
+    const category = await Category.findOne({ name: name });
+    console.log(category);
+    if (!category) {
+      return false;
+    }
+    return true;
+  };
 
   const _recordExists = async (recordId) => {
     if (mongoose.Types.ObjectId.isValid(recordId) === false) {
@@ -72,9 +73,9 @@ module.exports = (() => {
   return {
     userExists: _userExists,
     accountExists: _accountExists,
-    // accountExistsByName: _accountExistsByName,
+    accountExistsByName: _accountExistsByName,
     categoryExists: _categoryExists,
-    // categoryExistsByName: _categoryExistsByName,
+    categoryExistsByName: _categoryExistsByName,
     recordExists: _recordExists,
   };
 })();

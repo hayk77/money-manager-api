@@ -29,8 +29,8 @@ module.exports = (() => {
     }
   };
 
-  const _accountExistsByName = async (name, userId) => {
-    const account = await Account.findOne({ name: name, userId: userId });
+  const _accountExistsByName = async (name) => {
+    const account = await Account.findOne({ name: name });
     if (!account) {
       return false;
     }
@@ -51,7 +51,6 @@ module.exports = (() => {
 
   const _categoryExistsByName = async (name) => {
     const category = await Category.findOne({ name: name });
-    console.log(category);
     if (!category) {
       return false;
     }

@@ -1,5 +1,5 @@
 const express = require('express');
-const morgan = require('morgan');
+// const morgan = require('morgan');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xssClean = require('xss-clean');
@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 //   next();
 // });
 
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 
 // security
 app.use(mongoSanitize());

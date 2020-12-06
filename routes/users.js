@@ -9,7 +9,11 @@ router.post(
   '/',
   [
     check('email', 'Email is not valid').isEmail(),
-    check('password', 'Password is not valid').isLength({ min: 6 }),
+    check('password')
+      .exists()
+      .withMessage('Password can not be empty')
+      .isLength({ min: 6 })
+      .withMessage('Password can not be less than 6 characters'),
   ],
   postUser
 );

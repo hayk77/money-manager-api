@@ -22,7 +22,7 @@ router.post(
       .exists()
       .withMessage('Password can not be empty')
       .isLength({ min: 6 })
-      .withMessage('Password can not be less than 6 character'),
+      .withMessage('Password can not be less than 6 characters'),
   ],
   postAuth
 );

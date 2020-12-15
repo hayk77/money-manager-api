@@ -44,7 +44,7 @@ exports.postCategory = async (req, res) => {
     if (categoryExistsByName) {
       return res
         .status(400)
-        .json({ errors: [{ msg: 'Category with that name exists' }] });
+        .json({ errors: [{ msg: 'Category with that name already exists' }] });
     }
 
     // const user = await User.findOne({ _id: req.user.id });

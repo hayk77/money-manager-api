@@ -44,7 +44,7 @@ exports.postAccount = async (req, res) => {
     if (accountExistsByName) {
       return res
         .status(400)
-        .json({ errors: [{ msg: 'Account with that name exists' }] });
+        .json({ errors: [{ msg: 'Account with that name already exists' }] });
     }
 
     // const user = await User.findOne({ _id: req.user.id });
@@ -86,7 +86,7 @@ exports.putAccount = async (req, res) => {
     // if (accountExistsByName) {
     //   return res
     //     .status(400)
-    //     .json({ errors: [{ msg: 'Account with that name exists' }] });
+    //     .json({ errors: [{ msg: 'Account with that name already exists' }] });
     // }
 
     const account = await Account.findOne({ _id: req.params.accountId });

@@ -80,14 +80,15 @@ exports.putAccount = async (req, res) => {
     }
 
     // dublicate name
-    // const accountExistsByName = await dbDocumentChecker.accountExistsByName(
-    //   name
-    // );
-    // if (accountExistsByName) {
-    //   return res
-    //     .status(400)
-    //     .json({ errors: [{ msg: 'Account with that name already exists' }] });
-    // }
+    const accountDublicates = await Account.find({ name: name });
+    if (
+      accountDublicates.length === 1 &&
+      accountDublicates[0]._id.toString() !== req.params.accountId
+    ) {
+      return res.status(400).json({
+        errors: [{ msg: 'Account with that name already exists' }],
+      });
+    }
 
     const account = await Account.findOne({ _id: req.params.accountId });
 

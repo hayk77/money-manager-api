@@ -15,6 +15,7 @@ exports.getAuth = async (req, res) => {
     res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 };
+
 // POST(public) /auth
 exports.postAuth = async (req, res) => {
   const errors = validationResult(req);
@@ -54,6 +55,7 @@ exports.postAuth = async (req, res) => {
     res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 };
+
 // PUT(private) /auth/email
 exports.putEmail = async (req, res) => {
   const errors = validationResult(req);
@@ -68,6 +70,17 @@ exports.putEmail = async (req, res) => {
       return res.status(404).json({ msg: 'User with that id does not exist' });
     }
 
+    // dublicate name
+    const emialDublicates = await User.find({ email: req.body.email });
+    if (
+      emialDublicates.length === 1 &&
+      emialDublicates[0]._id.toString() !== req.user.id
+    ) {
+      return res.status(400).json({
+        errors: [{ msg: 'User with that email already exists' }],
+      });
+    }
+
     await User.findOneAndUpdate(
       { _id: req.user.id },
       { email: req.body.email },
@@ -80,6 +93,7 @@ exports.putEmail = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+
 // PUT(private) /auth/password
 exports.putPassword = async (req, res) => {
   const errors = validationResult(req);

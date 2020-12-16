@@ -91,14 +91,15 @@ exports.putCategory = async (req, res) => {
     }
 
     // dublicate name
-    // const categoryExistsByName = await dbDocumentChecker.categoryExistsByName(
-    //   name
-    // );
-    // if (categoryExistsByName) {
-    //   return res
-    //     .status(400)
-    //     .json({ errors: [{ msg: 'Category with that name exists' }] });
-    // }
+    const categoryDublicates = await Category.find({ name: name });
+    if (
+      categoryDublicates.length === 1 &&
+      categoryDublicates[0]._id.toString() !== req.params.categoryId
+    ) {
+      return res.status(400).json({
+        errors: [{ msg: 'Category with that name already exists' }],
+      });
+    }
 
     const category = await Category.findOne({ _id: req.params.categoryId });
 

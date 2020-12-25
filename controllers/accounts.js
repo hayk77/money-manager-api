@@ -27,15 +27,6 @@ exports.getAccounts = async (req, res) => {
       account.percentage = Math.round((account.total * 100) / assets);
     });
 
-    // sort accounts by percentage
-    accounts.sort(function (a, b) {
-      let keyA = a.percentage;
-      let keyB = b.percentage;
-      if (keyA < keyB) return 1;
-      if (keyA > keyB) return -1;
-      return 0;
-    });
-
     res.status(200).json(accounts);
   } catch (err) {
     console.log(err);

@@ -70,7 +70,6 @@ exports.getRecords = async (req, res) => {
       if (keyA > keyB) return -1;
       return 0;
     });
-    console.log(recordsByCategories);
 
     res.status(200).json({
       count: records.length,

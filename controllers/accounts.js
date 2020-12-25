@@ -16,6 +16,17 @@ exports.getAccounts = async (req, res) => {
 
     const accounts = await Account.find({ user: req.user.id });
 
+    // calculate percentages
+    let assets = 0;
+    accounts.forEach((account) => {
+      if (account.total > 0) {
+        assets += account.total;
+      }
+    });
+    accounts.forEach((account) => {
+      account.percentage = Math.round((account.total * 100) / assets);
+    });
+
     res.status(200).json(accounts);
   } catch (err) {
     console.log(err);

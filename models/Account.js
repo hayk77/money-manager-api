@@ -17,6 +17,7 @@ const accountSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
+  percentage: String,
 });
 
 accountSchema.pre('remove', async function (next) {

@@ -42,6 +42,7 @@ exports.getRecords = async (req, res) => {
     const recordsByCategories = categories.map((category) => {
       const { _id, type, icon, name } = category;
       let total = 0;
+      let percentage;
 
       records.forEach((record) => {
         if (category._id.toString() === record.category._id.toString()) {
@@ -49,7 +50,17 @@ exports.getRecords = async (req, res) => {
         }
       });
 
-      return { _id, type, icon, name, total };
+      if (type === 'expences' && expences !== 0) {
+        console.log('EXP', expences, total);
+        percentage = Math.round((total * 100) / expences);
+      } else if (type === 'incomes' && incomes !== 0) {
+        console.log('INC', incomes, total);
+        percentage = Math.round((total * 100) / incomes);
+      } else {
+        percentage = 0;
+      }
+
+      return { _id, type, icon, name, total, percentage };
     });
 
     res.status(200).json({

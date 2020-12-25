@@ -50,11 +50,10 @@ exports.getRecords = async (req, res) => {
         }
       });
 
+      // assign percentages
       if (type === 'expences' && expences !== 0) {
-        console.log('EXP', expences, total);
         percentage = Math.round((total * 100) / expences);
       } else if (type === 'incomes' && incomes !== 0) {
-        console.log('INC', incomes, total);
         percentage = Math.round((total * 100) / incomes);
       } else {
         percentage = 0;
@@ -62,6 +61,16 @@ exports.getRecords = async (req, res) => {
 
       return { _id, type, icon, name, total, percentage };
     });
+
+    // sort records by percentage
+    recordsByCategories.sort(function (a, b) {
+      let keyA = a.percentage;
+      let keyB = b.percentage;
+      if (keyA < keyB) return 1;
+      if (keyA > keyB) return -1;
+      return 0;
+    });
+    console.log(recordsByCategories);
 
     res.status(200).json({
       count: records.length,

@@ -29,8 +29,8 @@ module.exports = (() => {
     }
   };
 
-  const _accountExistsByName = async (name) => {
-    const account = await Account.findOne({ name: name });
+  const _accountExistsByName = async (name, user) => {
+    const account = await Account.findOne({ name: name, user: user });
     if (!account) {
       return false;
     }

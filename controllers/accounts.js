@@ -50,7 +50,8 @@ exports.postAccount = async (req, res) => {
 
     // dublicate name
     const accountExistsByName = await dbDocumentChecker.accountExistsByName(
-      name
+      name,
+      req.user.id
     );
     if (accountExistsByName) {
       return res
@@ -91,7 +92,10 @@ exports.putAccount = async (req, res) => {
     }
 
     // dublicate name
-    const accountDublicates = await Account.find({ name: name });
+    const accountDublicates = await Account.find({
+      name: name,
+      user: req.user.id,
+    });
     if (
       accountDublicates.length === 1 &&
       accountDublicates[0]._id.toString() !== req.params.accountId

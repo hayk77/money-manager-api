@@ -49,8 +49,8 @@ module.exports = (() => {
     }
   };
 
-  const _categoryExistsByName = async (name) => {
-    const category = await Category.findOne({ name: name });
+  const _categoryExistsByName = async (name, user) => {
+    const category = await Category.findOne({ name: name, user: user });
     if (!category) {
       return false;
     }

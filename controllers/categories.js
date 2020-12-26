@@ -39,7 +39,8 @@ exports.postCategory = async (req, res) => {
 
     // dublicate name
     const categoryExistsByName = await dbDocumentChecker.categoryExistsByName(
-      name
+      name,
+      req.user.id
     );
     if (categoryExistsByName) {
       return res
@@ -91,7 +92,10 @@ exports.putCategory = async (req, res) => {
     }
 
     // dublicate name
-    const categoryDublicates = await Category.find({ name: name });
+    const categoryDublicates = await Category.find({
+      name: name,
+      user: req.user.id,
+    });
     if (
       categoryDublicates.length === 1 &&
       categoryDublicates[0]._id.toString() !== req.params.categoryId

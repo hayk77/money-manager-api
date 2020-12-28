@@ -1,18 +1,8 @@
 [
   {
     "type": "expences",
-    "icon": "fast-food-outline",
+    "icon": "restaurant-outline",
     "name": "Food"
-  },
-  {
-    "type": "expences",
-    "icon": "bus-outline",
-    "name": "Transportation"
-  },
-  {
-    "type": "expences",
-    "icon": "shirt-outline",
-    "name": "Shopping"
   },
   {
     "type": "expences",
@@ -21,40 +11,144 @@
   },
   {
     "type": "expences",
-    "icon": "phone-portrait-outline",
+    "icon": "bus-outline",
+    "name": "Transportation"
+  },
+  {
+    "type": "expences",
+    "icon": "home-outline",
+    "name": "Transportation"
+  },
+  {
+    "type": "expences",
+    "icon": "car-sport-outline",
+    "name": "Car"
+  },
+  {
+    "type": "expences",
+    "icon": "game-controller-outline",
+    "name": "Entertainment"
+  },
+  {
+    "type": "expences",
+    "icon": "bag-handle-outline",
+    "name": "Shopping"
+  },
+  {
+    "type": "expences",
+    "icon": "shirt-outline",
+    "name": "Clothing"
+  },
+  {
+    "type": "expences",
+    "icon": "shield-checkmark-outline",
+    "name": "Insurance"
+  },
+  {
+    "type": "expences",
+    "icon": "newspaper-outline",
+    "name": "Tax"
+  },
+  {
+    "type": "expences",
+    "icon": "call-outline",
     "name": "Telephone"
+  },
+  {
+    "type": "expences",
+    "icon": "logo-no-smoking",
+    "name": "Cigarette"
+  },
+  {
+    "type": "expences",
+    "icon": "medkit-outline",
+    "name": "Health"
+  },
+  {
+    "type": "expences",
+    "icon": "barbell-outline",
+    "name": "Sport"
+  },
+  {
+    "type": "expences",
+    "icon": "happy-outline",
+    "name": "Baby"
+  },
+  {
+    "type": "expences",
+    "icon": "paw-outline",
+    "name": "Pet"
+  },
+  {
+    "type": "expences",
+    "icon": "color-wand-outline",
+    "name": "Beauty"
+  },
+  {
+    "type": "expences",
+    "icon": "headset-outline",
+    "name": "Electronics"
+  },
+  {
+    "type": "expences",
+    "icon": "fast-food-outline",
+    "name": "Fast Food"
+  },
+  {
+    "type": "expences",
+    "icon": "wine-outline",
+    "name": "Drinks"
+  },
+  {
+    "type": "expences",
+    "icon": "pizza-outline",
+    "name": "Snacks"
   },
   {
     "type": "expences",
     "icon": "gift-outline",
     "name": "Gift"
-  },
+  },  
   {
     "type": "expences",
     "icon": "beer-outline",
     "name": "Party"
-  },
+  },  
   {
     "type": "expences",
-    "icon": "earth-outline",
+    "icon": "airplane-outline",
     "name": "Travel"
   },
   {
     "type": "expences",
-    "icon": "library-outline",
+    "icon": "school-outline",
     "name": "Education"
   },
   {
     "type": "expences",
-    "icon": "heart-outline",
-    "name": "Health"
+    "icon": "nutrition-outline",
+    "name": "Fruits"
   },
   {
     "type": "expences",
-    "icon": "car-outline",
-    "name": "Car"
+    "icon": "book-outline",
+    "name": "Book"
   },
-
+  {
+    "type": "expences",
+    "icon": "tv-outline",
+    "name": "TV"
+  },
+  {
+    "type": "expences",
+    "icon": "print-outline",
+    "name": "Office"
+  },
+  {
+    "type": "expences",
+    "icon": "help-buoy-outline",
+    "name": "Other"
+  },
   {
     "type": "incomes",
     "icon": "wallet-outline",
@@ -62,12 +156,47 @@
   },
   {
     "type": "incomes",
+    "icon": "gift-outline",
+    "name": "Awards"
+  },
+  {
+    "type": "incomes",
+    "icon": "pricetags-outline",
+    "name": "Sale"
+  },
+  {
+    "type": "incomes",
     "icon": "business-outline",
+    "name": "Rental"
+  },
+  {
+    "type": "incomes",
+    "icon": "reload-circle-outline",
+    "name": "Refunds"
+  },
+  {
+    "type": "incomes",
+    "icon": "albums-outline",
+    "name": "Coupons"
+  },
+  {
+    "type": "incomes",
+    "icon": "dice-outline",
+    "name": "Lottery"
+  },
+  {
+    "type": "incomes",
+    "icon": "bar-chart-outline",
     "name": "Investments"
   },
   {
     "type": "incomes",
-    "icon": "card-outline",
+    "icon": "documents-outline",
     "name": "Dividents"
+  },
+  {
+    "type": "incomes",
+    "icon": "help-buoy-outline",
+    "name": "Other"
   }
 ]

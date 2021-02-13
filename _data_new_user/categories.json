@@ -16,11 +16,6 @@
   },
   {
     "type": "expences",
-    "icon": "home-outline",
-    "name": "Transportation"
-  },
-  {
-    "type": "expences",
     "icon": "car-sport-outline",
     "name": "Car"
   },

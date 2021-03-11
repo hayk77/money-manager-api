@@ -1,4 +1,4 @@
 {
-  "mongoURI": "mongodb+srv://admin:money-amanger-admin@frankfurt-cluster-tzjeb.mongodb.net/test?retryWrites=true&w=majority",
+  "mongoURI": "mongodb+srv://admin:money-amanger-admin@frankfurt-cluster-tzjeb.mongodb.net/production?retryWrites=true&w=majority",
   "jwtSecret": "jwt-secret-token-6829053238"
 }
